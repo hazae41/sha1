@@ -11,7 +11,7 @@ export function fromNoble(noble: typeof sha1): Adapter {
     }
 
     finalize() {
-      return this.hash.digest()
+      return this.hash.clone().digest()
     }
   }
 
