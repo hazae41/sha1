@@ -3,9 +3,7 @@ export interface Hasher {
   finalize(): Uint8Array
 }
 
-export type HasherClass = new () => Hasher
-
 export interface Adapter {
-  Hasher: HasherClass
+  Hasher: new () => Hasher
 }
 

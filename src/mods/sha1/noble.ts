@@ -4,7 +4,7 @@ import { Adapter } from "./sha1.js"
 export function fromNoble(noble: typeof sha1): Adapter {
 
   class Hasher {
-    hash = noble.create()
+    readonly hash = noble.create()
 
     update(bytes: Uint8Array) {
       this.hash.update(bytes)
