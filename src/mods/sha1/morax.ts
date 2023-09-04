@@ -7,11 +7,19 @@ export function fromMorax(morax: typeof Morax): Adapter {
   class Hasher {
 
     constructor(
-      readonly inner = new morax.Sha1Hasher()
+      readonly inner: Morax.Sha1Hasher
     ) { }
 
     [Symbol.dispose]() {
       this.inner.free()
+    }
+
+    static new(inner: Morax.Sha1Hasher) {
+      return new Hasher(inner)
+    }
+
+    static tryNew() {
+      return Result.runAndDoubleWrapSync(() => new morax.Sha1Hasher()).mapSync(Hasher.new)
     }
 
     tryUpdate(bytes: Uint8Array) {

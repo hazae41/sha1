@@ -53,7 +53,12 @@ export interface Hasher extends Disposable {
   tryFinalize(): Result<Copiable, Error>
 }
 
+export interface HasherFactory {
+  tryNew(): Result<Hasher, Error>
+}
+
+
 export interface Adapter {
-  readonly Hasher: new () => Hasher
+  readonly Hasher: HasherFactory
 }
 
