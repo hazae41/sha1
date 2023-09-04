@@ -60,5 +60,7 @@ export interface HasherFactory {
 
 export interface Adapter {
   readonly Hasher: HasherFactory
+
+  tryHash(bytes: Uint8Array): Result<Copiable, Error>
 }
 

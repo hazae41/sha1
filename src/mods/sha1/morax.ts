@@ -32,5 +32,9 @@ export function fromMorax(morax: typeof Morax): Adapter {
 
   }
 
-  return { Hasher }
+  function tryHash(bytes: Uint8Array) {
+    return Result.runAndDoubleWrapSync(() => morax.sha1(bytes))
+  }
+
+  return { Hasher, tryHash }
 }

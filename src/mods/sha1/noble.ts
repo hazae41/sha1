@@ -30,5 +30,9 @@ export function fromNoble(noble: typeof sha1): Adapter {
 
   }
 
-  return { Hasher }
+  function tryHash(bytes: Uint8Array) {
+    return Result.runAndDoubleWrapSync(() => noble(bytes)).mapSync(Copied.new)
+  }
+
+  return { Hasher, tryHash }
 }
