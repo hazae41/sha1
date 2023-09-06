@@ -23,16 +23,12 @@ import { Sha1 } from "@hazae41/sha1"
 import { Morax } from "@hazae41/morax"
 
 await Morax.initBundledOnce()
-
-/**
- * Create an instance from Morax
- **/
 const sha1 = Sha1.fromMorax(Morax)
 
 /**
  * Set it globally (optional)
  **/
-Sha1.global.inner = sha1
+Sha1.set(sha1)
 ```
 
 ### Noble (JavaScript)
@@ -41,15 +37,12 @@ Sha1.global.inner = sha1
 import { Sha1 } from "@hazae41/sha1"
 import * as noble_sha1 from "@noble/hashes/sha1"
 
-/**
- * Create an instance from Noble
- **/
 const sha1 = Sha1.fromNoble(noble_sha1.sha1)
 
 /**
  * Set it globally (optional)
  **/
-Sha1.global.inner = sha1
+Sha1.set(sha1)
 ```
 
 ## Usage
