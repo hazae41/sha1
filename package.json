@@ -1,7 +1,7 @@
 {
   "type": "module",
   "name": "@hazae41/sha1",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "SHA-1 adapter for WebAssembly and JS implementations",
   "homepage": "https://github.com/hazae41/sha1",
   "repository": "github:hazae41/sha1",
