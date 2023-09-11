@@ -1,9 +1,17 @@
 import { Cursor, CursorWriteError } from "@hazae41/cursor"
-import { OptionInit } from "@hazae41/option"
+import { None, Option } from "@hazae41/option"
 import { Ok, Result } from "@hazae41/result"
 import { CreateError, FinalizeError, HashError, UpdateError } from "./error.js"
 
-export const global: OptionInit<Adapter> = {}
+let global: Option<Adapter> = new None()
+
+export function get() {
+  return global.unwrap()
+}
+
+export function set(value?: Adapter) {
+  global = Option.wrap(value)
+}
 
 export interface Copiable extends Disposable {
   readonly bytes: Uint8Array
