@@ -1,24 +1,24 @@
 import { Result } from "@hazae41/result"
-import type { sha1 } from "@noble/hashes/sha1"
+import { sha1 } from "@noble/hashes/sha1"
 import { Adapter, Copied } from "./adapter.js"
 import { CreateError, FinalizeError, HashError, UpdateError } from "./errors.js"
 
-export function fromNoble(noble: typeof sha1): Adapter {
+export function fromNoble(): Adapter {
 
   class Hasher {
 
     constructor(
-      readonly inner: ReturnType<typeof noble.create>
+      readonly inner: ReturnType<typeof sha1.create>
     ) { }
 
     [Symbol.dispose]() { }
 
-    static new(inner: ReturnType<typeof noble.create>) {
+    static new(inner: ReturnType<typeof sha1.create>) {
       return new Hasher(inner)
     }
 
     static tryNew() {
-      return Result.runAndWrapSync(() => noble.create()).mapSync(Hasher.new).mapErrSync(CreateError.from)
+      return Result.runAndWrapSync(() => sha1.create()).mapSync(Hasher.new).mapErrSync(CreateError.from)
     }
 
     tryUpdate(bytes: Uint8Array) {
@@ -32,7 +32,7 @@ export function fromNoble(noble: typeof sha1): Adapter {
   }
 
   function tryHash(bytes: Uint8Array) {
-    return Result.runAndWrapSync(() => noble(bytes)).mapSync(Copied.new).mapErrSync(HashError.from)
+    return Result.runAndWrapSync(() => sha1(bytes)).mapSync(Copied.new).mapErrSync(HashError.from)
   }
 
   return { Hasher, tryHash }

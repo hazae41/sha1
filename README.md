@@ -18,31 +18,26 @@ npm i @hazae41/sha1
 
 ### Morax (WebAssembly)
 
+```bash
+npm i @hazae41/morax
+```
+
 ```typescript
 import { Sha1 } from "@hazae41/sha1"
-import { Morax } from "@hazae41/morax"
 
-await Morax.initBundledOnce()
-const sha1 = Sha1.fromMorax(Morax)
-
-/**
- * Set it globally (optional)
- **/
-Sha1.set(sha1)
+Sha1.set(Sha1.fromMorax())
 ```
 
 ### Noble (JavaScript)
 
+```bash
+npm i @noble/hashes
+```
+
 ```typescript
 import { Sha1 } from "@hazae41/sha1"
-import * as noble_sha1 from "@noble/hashes/sha1"
 
-const sha1 = Sha1.fromNoble(noble_sha1.sha1)
-
-/**
- * Set it globally (optional)
- **/
-Sha1.set(sha1)
+Sha1.set(Sha1.fromNoble())
 ```
 
 ## Usage
@@ -50,13 +45,13 @@ Sha1.set(sha1)
 ### Direct
 
 ```tsx
-const hashed: Uint8Array = sha1.tryHash(new Uint8Array([1,2,3,4,5])).unwrap().copy()
+const hashed: Uint8Array = Sha1.get().tryHash(new Uint8Array([1,2,3,4,5])).unwrap().copy()
 ```
 
 ### Incremental
 
 ```tsx
-const hasher = sha1.Hasher.tryNew().unwrap()
+const hasher = Sha1.get().Hasher.tryNew().unwrap()
 hasher.tryUpdate(new Uint8Array([1,2,3,4,5])).unwrap()
 const hashed: Uint8Array = hasher.tryFinalize().unwrap().copy()
 ```

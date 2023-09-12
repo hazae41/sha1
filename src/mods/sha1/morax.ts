@@ -1,9 +1,10 @@
-import type { Morax } from "@hazae41/morax"
+import { Morax } from "@hazae41/morax"
 import { Result } from "@hazae41/result"
 import { Adapter } from "./adapter.js"
 import { CreateError, FinalizeError, HashError, UpdateError } from "./errors.js"
 
-export function fromMorax(morax: typeof Morax): Adapter {
+export async function fromMorax(): Promise<Adapter> {
+  await Morax.initBundledOnce()
 
   class Hasher {
 
@@ -20,7 +21,7 @@ export function fromMorax(morax: typeof Morax): Adapter {
     }
 
     static tryNew() {
-      return Result.runAndWrapSync(() => new morax.Sha1Hasher()).mapSync(Hasher.new).mapErrSync(CreateError.from)
+      return Result.runAndWrapSync(() => new Morax.Sha1Hasher()).mapSync(Hasher.new).mapErrSync(CreateError.from)
     }
 
     tryUpdate(bytes: Uint8Array) {
@@ -34,7 +35,7 @@ export function fromMorax(morax: typeof Morax): Adapter {
   }
 
   function tryHash(bytes: Uint8Array) {
-    return Result.runAndWrapSync(() => morax.sha1(bytes)).mapErrSync(HashError.from)
+    return Result.runAndWrapSync(() => Morax.sha1(bytes)).mapErrSync(HashError.from)
   }
 
   return { Hasher, tryHash }
