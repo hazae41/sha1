@@ -25,7 +25,7 @@ npm i @hazae41/morax
 ```typescript
 import { Sha1 } from "@hazae41/sha1"
 
-Sha1.set(Sha1.fromMorax())
+Sha1.set(await Sha1.fromMorax())
 ```
 
 ### Noble (JavaScript)
