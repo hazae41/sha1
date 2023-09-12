@@ -45,7 +45,7 @@ Sha1.set(Sha1.fromNoble())
 ### Direct
 
 ```tsx
-const hashed: Uint8Array = Sha1.get().tryHash(new Uint8Array([1,2,3,4,5])).unwrap().copy()
+const hashed: Uint8Array = Sha1.get().tryHash(new Uint8Array([1,2,3,4,5])).unwrap().copyAndDispose()
 ```
 
 ### Incremental
@@ -53,5 +53,5 @@ const hashed: Uint8Array = Sha1.get().tryHash(new Uint8Array([1,2,3,4,5])).unwra
 ```tsx
 const hasher = Sha1.get().Hasher.tryNew().unwrap()
 hasher.tryUpdate(new Uint8Array([1,2,3,4,5])).unwrap()
-const hashed: Uint8Array = hasher.tryFinalize().unwrap().copy()
+const hashed: Uint8Array = hasher.tryFinalize().unwrap().copyAndDispose()
 ```
