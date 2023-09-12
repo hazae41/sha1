@@ -1,4 +1,4 @@
-export type HashingError =
+export type AnyError =
   | CreateError
   | UpdateError
   | FinalizeError
@@ -8,7 +8,7 @@ export class CreateError extends Error {
   readonly #class = CreateError
   readonly name = this.#class.name
 
-  constructor(options: ErrorOptions) {
+  constructor(options?: ErrorOptions) {
     super(`Could not create`, options)
   }
 
@@ -22,7 +22,7 @@ export class UpdateError extends Error {
   readonly #class = UpdateError
   readonly name = this.#class.name
 
-  constructor(options: ErrorOptions) {
+  constructor(options?: ErrorOptions) {
     super(`Could not update`, options)
   }
 
@@ -36,7 +36,7 @@ export class FinalizeError extends Error {
   readonly #class = FinalizeError
   readonly name = this.#class.name
 
-  constructor(options: ErrorOptions) {
+  constructor(options?: ErrorOptions) {
     super(`Could not finalize`, options)
   }
 
@@ -50,7 +50,7 @@ export class HashError extends Error {
   readonly #class = HashError
   readonly name = this.#class.name
 
-  constructor(options: ErrorOptions) {
+  constructor(options?: ErrorOptions) {
     super(`Could not hash`, options)
   }
 

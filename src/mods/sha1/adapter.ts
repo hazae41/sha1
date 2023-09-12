@@ -1,7 +1,7 @@
 import { Cursor, CursorWriteError } from "@hazae41/cursor"
 import { None, Option } from "@hazae41/option"
 import { Ok, Result } from "@hazae41/result"
-import { CreateError, FinalizeError, HashError, UpdateError } from "./error.js"
+import { CreateError, FinalizeError, HashError, UpdateError } from "./errors.js"
 
 let global: Option<Adapter> = new None()
 
@@ -65,7 +65,6 @@ export interface Hasher extends Disposable {
 export interface HasherFactory {
   tryNew(): Result<Hasher, CreateError>
 }
-
 
 export interface Adapter {
   readonly Hasher: HasherFactory

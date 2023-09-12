@@ -1,7 +1,7 @@
 import type { Morax } from "@hazae41/morax"
 import { Result } from "@hazae41/result"
-import { CreateError, FinalizeError, HashError, UpdateError } from "./error.js"
-import { Adapter } from "./sha1.js"
+import { Adapter } from "./adapter.js"
+import { CreateError, FinalizeError, HashError, UpdateError } from "./errors.js"
 
 export function fromMorax(morax: typeof Morax): Adapter {
 

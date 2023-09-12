@@ -1,7 +1,7 @@
 import { Result } from "@hazae41/result"
 import type { sha1 } from "@noble/hashes/sha1"
-import { CreateError, FinalizeError, HashError, UpdateError } from "./error.js"
-import { Adapter, Copied } from "./sha1.js"
+import { Adapter, Copied } from "./adapter.js"
+import { CreateError, FinalizeError, HashError, UpdateError } from "./errors.js"
 
 export function fromNoble(noble: typeof sha1): Adapter {
 
