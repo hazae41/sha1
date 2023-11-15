@@ -22,31 +22,49 @@ export function fromNoble(): Adapter {
       return new Hasher(inner)
     }
 
-    static tryNew() {
+    static createOrThrow() {
+      return new Hasher(sha1.create())
+    }
+
+    static tryCreate() {
       return Result.runAndWrapSync(() => {
-        return sha1.create()
-      }).mapSync(Hasher.new).mapErrSync(CreateError.from)
+        return this.createOrThrow()
+      }).mapErrSync(CreateError.from)
+    }
+
+    updateOrThrow(bytes: BytesOrCopiable) {
+      this.inner.update(getBytes(bytes))
+
+      return this
     }
 
     tryUpdate(bytes: BytesOrCopiable) {
       return Result.runAndWrapSync(() => {
-        return this.inner.update(getBytes(bytes))
-      }).set(this).mapErrSync(UpdateError.from)
+        return this.updateOrThrow(bytes)
+      }).mapErrSync(UpdateError.from)
+    }
+
+    finalizeOrThrow() {
+      return new Copied(this.inner.clone().digest())
     }
 
     tryFinalize() {
       return Result.runAndWrapSync(() => {
-        return this.inner.clone().digest()
-      }).mapSync(Copied.new).mapErrSync(FinalizeError.from)
+        return this.finalizeOrThrow()
+      }).mapErrSync(FinalizeError.from)
     }
 
   }
 
-  function tryHash(bytes: BytesOrCopiable) {
-    return Result.runAndWrapSync(() => {
-      return sha1(getBytes(bytes))
-    }).mapSync(Copied.new).mapErrSync(HashError.from)
+  function hashOrThrow(bytes: BytesOrCopiable) {
+    return new Copied(sha1(getBytes(bytes)))
   }
 
-  return { Hasher, tryHash }
+  function tryHash(bytes: BytesOrCopiable) {
+    return Result.runAndWrapSync(() => {
+      return hashOrThrow(bytes)
+    }).mapErrSync(HashError.from)
+  }
+
+  return { Hasher, hashOrThrow, tryHash }
 }

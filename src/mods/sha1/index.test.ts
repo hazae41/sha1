@@ -16,13 +16,13 @@ test("direct", async ({ message }) => {
 
 test("incremental", async ({ message }) => {
   const noble = fromNoble()
-  const nobleh = noble.Hasher.tryNew().unwrap()
+  const nobleh = noble.Hasher.tryCreate().unwrap()
   nobleh.tryUpdate(new Uint8Array([1, 2, 3, 4, 5, 6])).unwrap()
   nobleh.tryUpdate(new Uint8Array([1, 2, 3, 4, 5, 6])).unwrap()
   const aaa = nobleh.tryFinalize().unwrap().copyAndDispose()
 
   const morax = await fromMorax()
-  const moraxh = morax.Hasher.tryNew().unwrap()
+  const moraxh = morax.Hasher.tryCreate().unwrap()
   moraxh.tryUpdate(new Uint8Array([1, 2, 3, 4, 5, 6])).unwrap()
   moraxh.tryUpdate(new Uint8Array([1, 2, 3, 4, 5, 6])).unwrap()
   const bbb = moraxh.tryFinalize().unwrap().copyAndDispose()

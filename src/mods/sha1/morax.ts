@@ -29,35 +29,53 @@ export async function fromMorax(): Promise<Adapter> {
       return new Hasher(inner)
     }
 
-    static tryNew() {
+    static createOrThrow() {
+      return new Hasher(new Morax.Sha1Hasher())
+    }
+
+    static tryCreate() {
       return Result.runAndWrapSync(() => {
-        return new Morax.Sha1Hasher()
-      }).mapSync(Hasher.new).mapErrSync(CreateError.from)
+        return this.createOrThrow()
+      }).mapErrSync(CreateError.from)
+    }
+
+    updateOrThrow(bytes: BytesOrCopiable) {
+      using memory = getMemory(bytes)
+
+      this.inner.update(memory.inner)
+
+      return this
     }
 
     tryUpdate(bytes: BytesOrCopiable) {
-      using memory = getMemory(bytes)
-
       return Result.runAndWrapSync(() => {
-        return this.inner.update(memory.inner)
-      }).set(this).mapErrSync(UpdateError.from)
+        return this.updateOrThrow(bytes)
+      }).mapErrSync(UpdateError.from)
+    }
+
+    finalizeOrThrow() {
+      return this.inner.finalize()
     }
 
     tryFinalize() {
       return Result.runAndWrapSync(() => {
-        return this.inner.finalize()
+        return this.finalizeOrThrow()
       }).mapErrSync(FinalizeError.from)
     }
 
   }
 
-  function tryHash(bytes: BytesOrCopiable) {
+  function hashOrThrow(bytes: BytesOrCopiable) {
     using memory = getMemory(bytes)
 
+    return Morax.sha1(memory.inner)
+  }
+
+  function tryHash(bytes: BytesOrCopiable) {
     return Result.runAndWrapSync(() => {
-      return Morax.sha1(memory.inner)
+      return hashOrThrow(bytes)
     }).mapErrSync(HashError.from)
   }
 
-  return { Hasher, tryHash }
+  return { Hasher, hashOrThrow, tryHash }
 }
