@@ -15,6 +15,8 @@ export function set(value?: Nullable<Adapter>) {
   global = value
 }
 
+export type Output = Uint8Array & { readonly length: 20 }
+
 export interface Hasher extends Disposable {
   cloneOrThrow(): Hasher
   tryClone(): Result<Hasher, CloneError>
@@ -22,8 +24,8 @@ export interface Hasher extends Disposable {
   updateOrThrow(bytes: BytesOrCopiable): this
   tryUpdate(bytes: BytesOrCopiable): Result<this, UpdateError>
 
-  finalizeOrThrow(): Copiable
-  tryFinalize(): Result<Copiable, FinalizeError>
+  finalizeOrThrow(): Copiable<Output>
+  tryFinalize(): Result<Copiable<Output>, FinalizeError>
 }
 
 export interface HasherFactory {
@@ -34,7 +36,7 @@ export interface HasherFactory {
 export interface Adapter {
   readonly Hasher: HasherFactory
 
-  hashOrThrow(bytes: BytesOrCopiable): Copiable
-  tryHash(bytes: BytesOrCopiable): Result<Copiable, HashError>
+  hashOrThrow(bytes: BytesOrCopiable): Copiable<Output>
+  tryHash(bytes: BytesOrCopiable): Result<Copiable<Output>, HashError>
 }
 

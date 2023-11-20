@@ -1,7 +1,7 @@
 import { BytesOrCopiable, Copied } from "@hazae41/box"
 import { Result } from "@hazae41/result"
 import { sha1 } from "@noble/hashes/sha1"
-import { Adapter } from "./adapter.js"
+import { Adapter, Output } from "./adapter.js"
 import { CloneError, CreateError, FinalizeError, HashError, UpdateError } from "./errors.js"
 
 export function fromNoble(): Adapter {
@@ -55,7 +55,7 @@ export function fromNoble(): Adapter {
     }
 
     finalizeOrThrow() {
-      return new Copied(this.inner.clone().digest())
+      return new Copied(this.inner.clone().digest() as Output)
     }
 
     tryFinalize() {
@@ -67,7 +67,7 @@ export function fromNoble(): Adapter {
   }
 
   function hashOrThrow(bytes: BytesOrCopiable) {
-    return new Copied(sha1(getBytes(bytes)))
+    return new Copied(sha1(getBytes(bytes)) as Output)
   }
 
   function tryHash(bytes: BytesOrCopiable) {

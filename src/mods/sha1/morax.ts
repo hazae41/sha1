@@ -1,7 +1,7 @@
-import { Box, BytesOrCopiable } from "@hazae41/box"
+import { Box, BytesOrCopiable, Copiable } from "@hazae41/box"
 import { Morax } from "@hazae41/morax"
 import { Result } from "@hazae41/result"
-import { Adapter } from "./adapter.js"
+import { Adapter, Output } from "./adapter.js"
 import { CloneError, CreateError, FinalizeError, HashError, UpdateError } from "./errors.js"
 
 export async function fromMorax(): Promise<Adapter> {
@@ -64,7 +64,7 @@ export async function fromMorax(): Promise<Adapter> {
     }
 
     finalizeOrThrow() {
-      return this.inner.finalize()
+      return this.inner.finalize() as Copiable<Output>
     }
 
     tryFinalize() {
@@ -78,7 +78,7 @@ export async function fromMorax(): Promise<Adapter> {
   function hashOrThrow(bytes: BytesOrCopiable) {
     using memory = getMemory(bytes)
 
-    return Morax.sha1(memory.inner)
+    return Morax.sha1(memory.inner) as Copiable<Output>
   }
 
   function tryHash(bytes: BytesOrCopiable) {
