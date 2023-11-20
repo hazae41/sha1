@@ -2,7 +2,7 @@ import { BytesOrCopiable, Copied } from "@hazae41/box"
 import { Result } from "@hazae41/result"
 import { sha1 } from "@noble/hashes/sha1"
 import { Adapter } from "./adapter.js"
-import { CreateError, FinalizeError, HashError, UpdateError } from "./errors.js"
+import { CloneError, CreateError, FinalizeError, HashError, UpdateError } from "./errors.js"
 
 export function fromNoble(): Adapter {
 
@@ -30,6 +30,16 @@ export function fromNoble(): Adapter {
       return Result.runAndWrapSync(() => {
         return this.createOrThrow()
       }).mapErrSync(CreateError.from)
+    }
+
+    cloneOrThrow() {
+      return new Hasher(this.inner.clone())
+    }
+
+    tryClone() {
+      return Result.runAndWrapSync(() => {
+        return this.cloneOrThrow()
+      }).mapErrSync(CloneError.from)
     }
 
     updateOrThrow(bytes: BytesOrCopiable) {

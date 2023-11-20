@@ -2,7 +2,7 @@ import { Box, BytesOrCopiable } from "@hazae41/box"
 import { Morax } from "@hazae41/morax"
 import { Result } from "@hazae41/result"
 import { Adapter } from "./adapter.js"
-import { CreateError, FinalizeError, HashError, UpdateError } from "./errors.js"
+import { CloneError, CreateError, FinalizeError, HashError, UpdateError } from "./errors.js"
 
 export async function fromMorax(): Promise<Adapter> {
   await Morax.initBundledOnce()
@@ -37,6 +37,16 @@ export async function fromMorax(): Promise<Adapter> {
       return Result.runAndWrapSync(() => {
         return this.createOrThrow()
       }).mapErrSync(CreateError.from)
+    }
+
+    cloneOrThrow() {
+      return new Hasher(this.inner.clone())
+    }
+
+    tryClone() {
+      return Result.runAndWrapSync(() => {
+        return this.cloneOrThrow()
+      }).mapErrSync(CloneError.from)
     }
 
     updateOrThrow(bytes: BytesOrCopiable) {

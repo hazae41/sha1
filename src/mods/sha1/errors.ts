@@ -3,6 +3,7 @@ export type AnyError =
   | UpdateError
   | FinalizeError
   | HashError
+  | CloneError
 
 export class CreateError extends Error {
   readonly #class = CreateError
@@ -17,6 +18,21 @@ export class CreateError extends Error {
   }
 
 }
+
+export class CloneError extends Error {
+  readonly #class = CloneError
+  readonly name = this.#class.name
+
+  constructor(options?: ErrorOptions) {
+    super(`Could not clone`, options)
+  }
+
+  static from(cause: unknown) {
+    return new CloneError({ cause })
+  }
+
+}
+
 
 export class UpdateError extends Error {
   readonly #class = UpdateError

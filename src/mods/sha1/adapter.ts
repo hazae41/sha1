@@ -1,7 +1,7 @@
 import { BytesOrCopiable, Copiable } from "@hazae41/box"
 import { Nullable } from "@hazae41/option"
 import { Result } from "@hazae41/result"
-import { CreateError, FinalizeError, HashError, UpdateError } from "./errors.js"
+import { CloneError, CreateError, FinalizeError, HashError, UpdateError } from "./errors.js"
 
 let global: Nullable<Adapter> = undefined
 
@@ -16,6 +16,9 @@ export function set(value?: Nullable<Adapter>) {
 }
 
 export interface Hasher extends Disposable {
+  cloneOrThrow(): Hasher
+  tryClone(): Result<Hasher, CloneError>
+
   updateOrThrow(bytes: BytesOrCopiable): this
   tryUpdate(bytes: BytesOrCopiable): Result<this, UpdateError>
 
