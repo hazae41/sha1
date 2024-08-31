@@ -56,6 +56,7 @@ const hashed2: Uint8Array = hashed.bytes.slice()
 ```tsx
 using hasher: Sha1.Hasher = Sha1.get().getOrThrow().Hasher.createOrThrow()
 hasher.updateOrThrow(new Uint8Array([1,2,3,4,5]))
+hasher.updateOrThrow(new Uint8Array([6,7,8,9,10]))
 
 using hashed: Copiable = hasher.finalizeOrThrow()
 const hashed2: Uint8Array = hashed.bytes.slice()
