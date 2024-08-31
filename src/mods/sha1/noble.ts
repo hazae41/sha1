@@ -1,10 +1,9 @@
-import { BytesOrCopiable, Copied } from "@hazae41/box"
-import { Result } from "@hazae41/result"
-import { sha1 } from "@noble/hashes/sha1"
+import type * as Noble from "@noble/hashes/sha1"
+import { BytesOrCopiable, Copied } from "libs/copiable/index.js"
 import { Adapter, Output } from "./adapter.js"
-import { CloneError, CreateError, FinalizeError, HashError, UpdateError } from "./errors.js"
 
-export function fromNoble(): Adapter {
+export function fromNoble(noble: typeof Noble) {
+  const { sha1 } = noble
 
   function getBytes(bytes: BytesOrCopiable) {
     return "bytes" in bytes ? bytes.bytes : bytes
@@ -13,12 +12,12 @@ export function fromNoble(): Adapter {
   class Hasher {
 
     constructor(
-      readonly inner: ReturnType<typeof sha1.create>
+      readonly inner: ReturnType<typeof Noble.sha1.create>
     ) { }
 
     [Symbol.dispose]() { }
 
-    static new(inner: ReturnType<typeof sha1.create>) {
+    static create(inner: ReturnType<typeof Noble.sha1.create>) {
       return new Hasher(inner)
     }
 
@@ -26,20 +25,8 @@ export function fromNoble(): Adapter {
       return new Hasher(sha1.create())
     }
 
-    static tryCreate() {
-      return Result.runAndWrapSync(() => {
-        return this.createOrThrow()
-      }).mapErrSync(CreateError.from)
-    }
-
     cloneOrThrow() {
       return new Hasher(this.inner.clone())
-    }
-
-    tryClone() {
-      return Result.runAndWrapSync(() => {
-        return this.cloneOrThrow()
-      }).mapErrSync(CloneError.from)
     }
 
     updateOrThrow(bytes: BytesOrCopiable) {
@@ -48,20 +35,8 @@ export function fromNoble(): Adapter {
       return this
     }
 
-    tryUpdate(bytes: BytesOrCopiable) {
-      return Result.runAndWrapSync(() => {
-        return this.updateOrThrow(bytes)
-      }).mapErrSync(UpdateError.from)
-    }
-
     finalizeOrThrow() {
       return new Copied(this.inner.clone().digest() as Output)
-    }
-
-    tryFinalize() {
-      return Result.runAndWrapSync(() => {
-        return this.finalizeOrThrow()
-      }).mapErrSync(FinalizeError.from)
     }
 
   }
@@ -70,11 +45,5 @@ export function fromNoble(): Adapter {
     return new Copied(sha1(getBytes(bytes)) as Output)
   }
 
-  function tryHash(bytes: BytesOrCopiable) {
-    return Result.runAndWrapSync(() => {
-      return hashOrThrow(bytes)
-    }).mapErrSync(HashError.from)
-  }
-
-  return { Hasher, hashOrThrow, tryHash }
+  return { Hasher, hashOrThrow } satisfies Adapter
 }
