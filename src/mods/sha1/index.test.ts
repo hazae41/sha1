@@ -5,10 +5,10 @@ import { fromNoble } from "./noble.js"
 import { fromWasm } from "./wasm.js"
 
 import { Sha1Wasm } from "@hazae41/sha1.wasm"
-import * as Noble from "@noble/hashes/sha1"
+import Sha1Noble from "@noble/hashes/sha1"
 
 test("direct", async ({ message }) => {
-  const noble = fromNoble(Noble)
+  const noble = fromNoble(Sha1Noble)
   using aaa = noble.hashOrThrow(new Uint8Array([1, 2, 3, 4, 5, 6]))
 
   await Sha1Wasm.initBundled()
@@ -20,7 +20,7 @@ test("direct", async ({ message }) => {
 })
 
 test("incremental", async ({ message }) => {
-  const noble = fromNoble(Noble)
+  const noble = fromNoble(Sha1Noble)
 
   using nobleh = noble.Hasher.createOrThrow()
   nobleh.updateOrThrow(new Uint8Array([1, 2, 3, 4, 5, 6]))
