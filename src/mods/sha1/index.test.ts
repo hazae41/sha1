@@ -9,11 +9,13 @@ import Sha1Noble from "@noble/hashes/sha1"
 
 test("direct", async ({ message }) => {
   const noble = fromNoble(Sha1Noble)
+
   using aaa = noble.hashOrThrow(new Uint8Array([1, 2, 3, 4, 5, 6]))
 
   await Sha1Wasm.initBundled()
 
   const wasm = fromWasm(Sha1Wasm)
+
   using bbb = wasm.hashOrThrow(new Uint8Array([1, 2, 3, 4, 5, 6]))
 
   assert(Buffer.from(aaa.bytes).equals(Buffer.from(bbb.bytes)))
