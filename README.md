@@ -26,7 +26,9 @@ npm i @hazae41/sha1.wasm
 import { Sha1 } from "@hazae41/sha1"
 import { Sha1Wasm } from "@hazae41/sha1.wasm"
 
-Sha1.set(await Sha1.fromWasm(Sha1Wasm))
+await Sha1Wasm.initBundled()
+
+Sha1.set(Sha1.fromWasm(Sha1Wasm))
 ```
 
 ### Noble (JavaScript)

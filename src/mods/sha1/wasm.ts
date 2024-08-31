@@ -3,10 +3,8 @@ import type { Sha1Hasher, Sha1Wasm } from "@hazae41/sha1.wasm"
 import { BytesOrCopiable, Copiable } from "libs/copiable/index.js"
 import { Adapter, Output } from "./adapter.js"
 
-export async function fromWasm(wasm: typeof Sha1Wasm) {
-  const { initBundled, Memory, Sha1Hasher, sha1 } = wasm
-
-  await initBundled()
+export function fromWasm(wasm: typeof Sha1Wasm) {
+  const { Memory, Sha1Hasher, sha1 } = wasm
 
   function getMemory(bytesOrCopiable: BytesOrCopiable) {
     if (bytesOrCopiable instanceof Memory)

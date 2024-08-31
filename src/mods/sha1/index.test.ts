@@ -11,7 +11,9 @@ test("direct", async ({ message }) => {
   const noble = fromNoble(Noble)
   using aaa = noble.hashOrThrow(new Uint8Array([1, 2, 3, 4, 5, 6]))
 
-  const wasm = await fromWasm(Sha1Wasm)
+  await Sha1Wasm.initBundled()
+
+  const wasm = fromWasm(Sha1Wasm)
   using bbb = wasm.hashOrThrow(new Uint8Array([1, 2, 3, 4, 5, 6]))
 
   assert(Buffer.from(aaa.bytes).equals(Buffer.from(bbb.bytes)))
@@ -26,7 +28,9 @@ test("incremental", async ({ message }) => {
 
   using aaa = nobleh.finalizeOrThrow()
 
-  const wasm = await fromWasm(Sha1Wasm)
+  await Sha1Wasm.initBundled()
+
+  const wasm = fromWasm(Sha1Wasm)
 
   using wasmh = wasm.Hasher.createOrThrow()
   wasmh.updateOrThrow(new Uint8Array([1, 2, 3, 4, 5, 6]))
