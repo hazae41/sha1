@@ -16,16 +16,17 @@ npm i @hazae41/sha1
 
 ## Getting started
 
-### Morax (WebAssembly)
+### WebAssembly
 
 ```bash
-npm i @hazae41/morax
+npm i @hazae41/sha1.wasm
 ```
 
 ```typescript
 import { Sha1 } from "@hazae41/sha1"
+import { Sha1Wasm } from "@hazae41/sha1.wasm"
 
-Sha1.set(await Sha1.fromMorax())
+Sha1.set(await Sha1.fromWasm(Sha1Wasm))
 ```
 
 ### Noble (JavaScript)
@@ -36,8 +37,9 @@ npm i @noble/hashes
 
 ```typescript
 import { Sha1 } from "@hazae41/sha1"
+import * as Noble from "@noble/hashes"
 
-Sha1.set(Sha1.fromNoble())
+Sha1.set(Sha1.fromNoble(Noble))
 ```
 
 ## Usage
@@ -45,13 +47,16 @@ Sha1.set(Sha1.fromNoble())
 ### Direct
 
 ```tsx
-const hashed: Uint8Array = Sha1.get().tryHash(new Uint8Array([1,2,3,4,5])).unwrap().copyAndDispose()
+using hashed: Copiable = Sha1.get().getOrThrow().hashOrThrow(new Uint8Array([1,2,3,4,5]))
+const hashed2: Uint8Array = hashed.bytes.slice()
 ```
 
 ### Incremental
 
 ```tsx
-const hasher = Sha1.get().Hasher.tryNew().unwrap()
-hasher.tryUpdate(new Uint8Array([1,2,3,4,5])).unwrap()
-const hashed: Uint8Array = hasher.tryFinalize().unwrap().copyAndDispose()
+using hasher: Sha1.Hasher = Sha1.get().getOrThrow().Hasher.createOrThrow()
+hasher.updateOrThrow(new Uint8Array([1,2,3,4,5]))
+
+using hashed: Copiable = hasher.finalizeOrThrow()
+const hashed2: Uint8Array = hashed.bytes.slice()
 ```
