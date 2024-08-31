@@ -39,7 +39,7 @@ npm i @noble/hashes
 
 ```typescript
 import { Sha1 } from "@hazae41/sha1"
-import Sha1Noble from "@noble/hashes"
+import Sha1Noble from "@noble/hashes/sha1"
 
 Sha1.set(Sha1.fromNoble(Noble))
 ```
