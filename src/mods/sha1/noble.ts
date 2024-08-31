@@ -1,8 +1,8 @@
-import type * as Noble from "@noble/hashes/sha1"
+import type Sha1Noble from "@noble/hashes/sha1"
 import { BytesOrCopiable, Copied } from "libs/copiable/index.js"
 import { Adapter, Output } from "./adapter.js"
 
-export function fromNoble(noble: typeof Noble) {
+export function fromNoble(noble: typeof Sha1Noble) {
   const { sha1 } = noble
 
   function getBytes(bytes: BytesOrCopiable) {
@@ -12,12 +12,12 @@ export function fromNoble(noble: typeof Noble) {
   class Hasher {
 
     constructor(
-      readonly inner: ReturnType<typeof Noble.sha1.create>
+      readonly inner: ReturnType<typeof Sha1Noble.sha1.create>
     ) { }
 
     [Symbol.dispose]() { }
 
-    static create(inner: ReturnType<typeof Noble.sha1.create>) {
+    static create(inner: ReturnType<typeof Sha1Noble.sha1.create>) {
       return new Hasher(inner)
     }
 
