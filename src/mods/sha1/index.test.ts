@@ -1,8 +1,8 @@
 import "@hazae41/symbol-dispose-polyfill"
 
 import { assert, test } from "@hazae41/phobos"
-import { fromWasm } from "./morax.js"
 import { fromNoble } from "./noble.js"
+import { fromWasm } from "./wasm.js"
 
 import { Sha1Wasm } from "@hazae41/sha1.wasm"
 import * as Noble from "@noble/hashes/sha1"
