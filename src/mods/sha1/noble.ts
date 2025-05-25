@@ -1,4 +1,4 @@
-import type Sha1Noble from "@noble/hashes/sha1"
+import type * as Sha1Noble from "@noble/hashes/sha1"
 import { BytesOrCopiable, Copied } from "libs/copiable/index.js"
 import { Adapter, Output } from "./adapter.js"
 
