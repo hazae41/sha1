@@ -5,7 +5,7 @@ import { fromNoble } from "./noble.js"
 import { fromWasm } from "./wasm.js"
 
 import { Sha1Wasm } from "@hazae41/sha1.wasm"
-import Sha1Noble from "@noble/hashes/sha1"
+import * as Sha1Noble from "@noble/hashes/sha1"
 
 test("direct", async ({ message }) => {
   const noble = fromNoble(Sha1Noble)
